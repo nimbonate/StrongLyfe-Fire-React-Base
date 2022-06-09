@@ -1,0 +1,4 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Sitemap: https://fire-react-base.web.app/sitemap.xml
+Disallow:

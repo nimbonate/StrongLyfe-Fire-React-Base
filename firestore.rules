@@ -1,0 +1,102 @@
+rules_version = '2';
+service cloud.firestore {
+    match /databases/{database}/documents {
+        // Sites collection // 
+        // Will contain documents like counts, public, sensitive, etc
+        match /site/{documentId} {
+            function isAdmin() {
+                return (
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)/readOnly/flags).data.isAdmin == true
+                )
+            }
+
+            function isSuperAdmin() {
+                return (
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)/readOnly/flags).data.isSuperAdmin == true
+                )
+            }
+
+            function isPublic() {
+                // ** Would be more scalable to test a field in the document if public
+                return (
+                    (documentId != 'sensitive' && documentId != 'counts')
+                )
+            }
+
+            function isMfaEnabled() {
+                return request.auth.token.firebase.get('sign_in_second_factor', null) == 'phone' && 'second_factor_identifier' in request.auth.token.firebase;
+            }
+
+            // Anyone can read or list site docs as long as it isn't id of 'sensitive'
+            allow read, list: if isPublic() || (isAdmin() && isMfaEnabled());
+            // Only admins or super admins can create and update
+            allow create, update: if (isAdmin() && isMfaEnabled());
+            // Only super admins can delete it
+            allow delete: if (isSuperAdmin() && isMfaEnabled());
+        }
+
+        // Users collection // 
+        match /users/{userId} {
+            function isTrueUser() {
+                return userId == request.auth.uid;
+            }
+
+            function isAdmin() {
+                return (
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)/readOnly/flags).data.isAdmin == true 
+                )
+            }
+
+            function isSuperAdmin() {
+                return (
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)/readOnly/flags).data.isSuperAdmin == true 
+                )
+            }
+
+            function isMfaEnabled() {
+                return request.auth.token.firebase.get('sign_in_second_factor', null) == 'phone' && 'second_factor_identifier' in request.auth.token.firebase;
+            }
+
+            // Anyone can create a user
+            allow create: if true;
+            // Only that user or an admin can update, list, or read their profile data
+            allow read, list, update: if isTrueUser() || (isAdmin() && isMfaEnabled());
+            // Super admins can delete a user
+            allow delete: if isSuperAdmin();
+
+            match /uploads/{document=**} {
+                // Only that signed in admin user can create, update, read, delete, or list upload documents
+                allow create, update, read, list, delete: if (isAdmin() && isMfaEnabled());
+            }
+
+            match /readOnly/{document=**} {
+                // Only Super Admins can edit these documents, anyone can read
+                allow create, update, list, delete: if (isSuperAdmin() && isMfaEnabled());
+                allow read: if true;
+            }
+
+            match /newAdmins/{document=**} {
+                // Only Super Admins can write and read these documents
+                allow read, create, update, list, delete: if (isSuperAdmin() && isMfaEnabled());
+            }
+        }
+
+        // Contact Messages //
+        // ** I am torn on whether or not to include this collection as a subcol of "site"
+        match /messages/{messageId} {
+            function isAdmin() {
+                return (
+                    get(/databases/$(database)/documents/users/$(request.auth.uid)/readOnly/flags).data.isAdmin == true 
+                )
+            }
+
+            function isMfaEnabled() {
+                return request.auth.token.firebase.get('sign_in_second_factor', null) == 'phone' && 'second_factor_identifier' in request.auth.token.firebase;
+            }
+            
+            // No one can update, delete, read, or list but everyone can create
+            allow update, delete, read, list: if (isAdmin() && isMfaEnabled());
+            allow create: if true;
+        }
+    }
+}

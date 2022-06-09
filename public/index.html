@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- HTML Meta Tags -->
+    <title>Fire React Base</title>
+    <meta name="description" content="Fire React Base is a template for creating web apps with Firebase and React.js.">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Fire React Base">
+    <meta itemprop="description" content="Fire React Base is a template for creating web apps with Firebase and React.js.">
+    <meta itemprop="image" content="https://firebasestorage.googleapis.com/v0/b/test-fire-react-base.appspot.com/o/public%2Fbanners%2FDSC_0047.JPG?alt=media&token=8d4ff53c-11c2-4849-9479-6cd091598635">
+
+    <!-- Facebook/OpenGraph Meta Tags -->
+    <meta property="og:site_name " content="Fire React Base">
+    <meta property="og:url" content="https://fire-react-base.web.app">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Fire React Base">
+    <meta property="og:description" content="Fire React Base is a template for creating web apps with Firebase and React.js.">
+    <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/test-fire-react-base.appspot.com/o/public%2Fbanners%2FDSC_0047.JPG?alt=media&token=8d4ff53c-11c2-4849-9479-6cd091598635"> <!-- Suggested dimensions for og:image1200×630 pixels -->
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Fire React Base">
+    <meta name="twitter:description" content="Fire React Base is a template for creating web apps with Firebase and React.js.">
+    <meta name="twitter:image" content="%PUBLIC_URL%/logo192.png">
+
+    <!-- PWA Tags -->
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+  </head>
+  <body>
+    <script>
+      function isIE() {
+        ua = navigator.userAgent;
+        /* MSIE used to detect old browsers and Trident used to newer ones*/
+        var is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+          return is_ie; 
+      }
+      /* Create an alert to show if the browser is IE or not */
+      if (isIE()){
+          alert('Looks like you are using the ancient, unsupported, and unsafe Internet Explorer! No worries, just install a modern web browser like Chrome or email help@minute.tech and I will step you through it.');
+      } 
+    </script>
+    <noscript>
+      Uh oh, looks like JavaScript isn't enabled. This is rare, so you get
+      special treatment. Email help@minute.tech and they can help.
+    </noscript>
+    <!--[if IE]>
+      Looks like you are using the ancient, unsupported Internet Explorer! 
+      No worries, just install a modern web browser like Chrome, Firefox, or Safari. 
+      If you can't figure out how to do that, email help@minute.tech and we will step you through it!
+    <![endif]-->
+    <div id="root"></div>
+  </body>
+</html>

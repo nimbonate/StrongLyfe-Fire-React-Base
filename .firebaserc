@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "fire-react-base",
+    "test": "test-fire-react-base",
+    "live": "fire-react-base"
+  },
+  "targets": {}
+}
